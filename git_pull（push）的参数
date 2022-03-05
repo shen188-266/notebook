@@ -1,0 +1,32 @@
+git push <remote> <place>
+git push origin master  意思是:切到本地仓库中的“master”分支，获取所有的提交，再到远程仓库“origin”中找到“master”分支，将远程仓库中没有的提交记录都添加上去，搞定之后告诉我。
+我们通过“place”参数来告诉 Git 提交记录来自于 master, 要推送到远程仓库中的 master
+你可能想问 —— 如果来源和去向分支的名称不同呢？比如你想把本地的 foo 分支推送到远程仓库中的 bar 分支
+要同时为源和目的地指定 <place> 的话，只需要用冒号 : 将二者连起来就可以了：
+git push origin <source>:<destination>
+如果你要推送到的目的分支不存在会怎么样呢？没问题！Git 会在远程仓库中根据你提供的名称帮你创建这个分支！
+git push origin master:newBranch
+
+
+git fetch origin foo
+你可能会好奇 —— 为何 Git 会将新提交放到 o/foo 而不是放到我本地的 foo 分支呢？之前不是说这样的 <place> 参数就是同时应用于本地和远程的位置吗？
+好吧, 本例中 Git 做了一些特殊处理，因为你可能在 foo 分支上的工作还未完成，你也不想弄乱它。还记得在 git fetch 课程里我们讲到的吗 —— 它不会更新你的本地的非远程分支, 只是下载提交记录（这样, 你就可以对远程分支进行检查或者合并了）。
+
+ 
+
+“如果我们指定 <source>:<destination> 会发生什么呢？”
+如果你觉得直接更新本地分支很爽，那你就用冒号分隔的 refspec 吧。不过，你不能在当前检出的分支上干这个事，但是其它分支是可以的。
+这里有一点是需要注意的 —— source 现在指的是远程仓库中的位置，而 <destination> 才是要放置提交的本地仓库的位置。它与 git push 刚好相反，这是可以讲的通的，因为我们在往相反的方向传送数据。
+
+
+
+Git pull 参数
+既然你已经掌握关于 git fetch 和 git push 参数的方方面面了，关于 git pull 几乎没有什么可以说的了 
+因为git pull 到头来就是 fetch 后跟 merge 的缩写。你可以理解为用同样的参数执行 git fetch，然后再 merge 你所抓取到的提交记录。
+还可以和其它更复杂的参数一起使用, 来看一些例子:
+以下命令在 Git 中是等效的:
+git pull origin foo 相当于：
+git fetch origin foo; git merge o/foo
+还有...
+git pull origin bar~1:bugFix 相当于：
+git fetch origin bar~1:bugFix; git merge bugFix
